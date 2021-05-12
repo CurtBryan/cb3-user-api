@@ -19,6 +19,10 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const config_1 = require("./config/config");
 const model_index_1 = require("./controllers/v0/model.index");
 (() => __awaiter(this, void 0, void 0, function* () {
+    if (process.env.ENVIRONMENT === "LOCAL") {
+        require("dotenv").config();
+    }
+    console.log("region: ", config_1.config.aws_region);
     yield sequelize_1.sequelize.addModels(model_index_1.V0_USER_MODELS);
     yield sequelize_1.sequelize.sync();
     const app = express_1.default();
@@ -26,17 +30,20 @@ const model_index_1 = require("./controllers/v0/model.index");
     app.use(body_parser_1.default.json());
     app.use(cors_1.default({
         allowedHeaders: [
-            'Origin', 'X-Requested-With',
-            'Content-Type', 'Accept',
-            'X-Access-Token', 'Authorization',
+            "Origin",
+            "X-Requested-With",
+            "Content-Type",
+            "Accept",
+            "X-Access-Token",
+            "Authorization",
         ],
-        methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+        methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
         origin: config_1.config.url,
     }));
-    app.use('/api/v0/', index_router_1.IndexRouter);
+    app.use("/api/v0/", index_router_1.IndexRouter);
     // Root URI call
-    app.get('/', (req, res) => __awaiter(this, void 0, void 0, function* () {
-        res.send('/api/v0/');
+    app.get("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
+        res.send("/api/v0/");
     }));
     // Start the Server
     app.listen(port, () => {

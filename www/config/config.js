@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+if (process.env.ENVIRONMENT === "LOCAL") {
+    require("dotenv").config();
+}
 exports.config = {
     'username': process.env.POSTGRES_USERNAME,
     'password': process.env.POSTGRES_PASSWORD,
